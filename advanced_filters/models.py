@@ -10,6 +10,9 @@ class UserLookupManager(models.Manager):
     def filter_by_user(self, user):
         """All filters that should be displayed to a user (by users/group)"""
 
+        if not hasattr(user, 'groups'):
+            return self.filter(users=user)
+
         return self.filter(Q(users=user) | Q(groups__in=user.groups.all()))
 
 
